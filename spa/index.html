@@ -10,4 +10,18 @@
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
   </body>
+
+  <div style="text-align:center; margin-top:20px;">
+  <h3>Servido pelo container:</h3>
+  <h2 id="container"></h2>
+</div>
+
+<script>
+  fetch('/whoami')
+    .then(res => res.text())
+    .then(data => {
+      document.getElementById('container').innerText = data
+    })
+</script>
+
 </html>

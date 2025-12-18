@@ -19,4 +19,5 @@ authRouter.post(
 );
 authRouter.get("/me", authMiddleware, authController.userLogged);
 
+
 export default authRouter;

@@ -1,12 +1,12 @@
-FROM node:latest
+FROM node:18-alpine
 
 WORKDIR /api
 
 COPY . .
 
-RUN rm -rf node_modules
 RUN npm i
+
+EXPOSE 5002
 
 CMD ["npm", "start"]
 
-EXPOSE 5002

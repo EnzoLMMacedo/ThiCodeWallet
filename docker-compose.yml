@@ -6,40 +6,47 @@ services:
     volumes:
       - mongdb-wallet-volume:/data/db
     restart: always
+    networks:
+      - backend
 
   api:
     container_name: api-wallet
     build: ./api
     restart: always
     ports:
-      - 5002:5002
+      - "5002:5002"
     depends_on:
       - mongo-wallet
     env_file:
-      - ./api/.env
+      - ./api/.env 
+    networks:
+      - backend
+  
+  nginx:
+    container_name: nginx-wallet
+    build: 
+      context: ./nginx
+      dockerfile: Dockerfile
+    ports:
+      - "8081:80"
+    depends_on:
+      - api
+    networks:
+      - backend
 
   spa:
     container_name: spa-wallet
-    build: ./spa
-    depends_on:
-      - api
-    env_file:
-      - ./spa/.env
-    volumes:
-      - spa-volume:/var/www/html
-
-  nginx:
-    container_name: nginx-wallet
-    build: ./nginx
+    build:
+      context: ./spa
+      dockerfile: Dockerfile
     ports:
-      - 80:80
-    volumes:
-      - spa-volume:/var/www/html
-    depends_on:
-      - mongo-wallet
-      - api
+      - "8080:80"
+    networks:
       - spa
+    
 
 volumes:
   mongdb-wallet-volume:
-  spa-volume:
+networks:
+  backend:
+  spa: 
